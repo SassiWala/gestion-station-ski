@@ -14,7 +14,7 @@ pipeline{
     }
     stage("SonarQube"){
       steps{
-        sh 'mvn verify sonar:sonar'
+        sh 'mvn clean verify sonar:sonar -Dsonar.login=sqa_186ded1457469978ae48bb65ba02511ebfe97762'
       }
     }
   }
