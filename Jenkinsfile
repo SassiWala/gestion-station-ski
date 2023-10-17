@@ -16,5 +16,10 @@ pipeline{
         sh 'mvn clean compile'
       }
     }
+    stage("SonarQube"){
+          steps{
+            sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
+          }
+        }
   }
 }
