@@ -2,7 +2,7 @@ package tn.esprit.spring.entities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
+
 import java.util.Set;
 
 import javax.persistence.*;
@@ -46,7 +46,25 @@ public class Skier implements Serializable {
 	@OneToMany(mappedBy = "skier")
 	Set<Registration> registrations;
 
+	public Skier(String firstName, String lastName, LocalDate dateOfBirth, String city,  Set<Piste> pistes, Set<Registration> registrations) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.city = city;
 
+		this.pistes = pistes;
+		this.registrations = registrations;
+	}
+
+	public Skier(Long numSkier, String firstName, String lastName, LocalDate dateOfBirth, String city, Set<Piste> pistes, Set<Registration> registrations) {
+		this.numSkier = numSkier;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dateOfBirth = dateOfBirth;
+		this.city = city;
+		this.pistes = pistes;
+		this.registrations = registrations;
+	}
 
 
 
