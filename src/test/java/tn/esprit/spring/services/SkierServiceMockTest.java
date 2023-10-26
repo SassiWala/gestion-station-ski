@@ -1,6 +1,7 @@
 package tn.esprit.spring.services;
 
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
@@ -18,8 +19,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+
 
 @ExtendWith(MockitoExtension.class)
 public class SkierServiceMockTest {
@@ -45,21 +48,17 @@ public class SkierServiceMockTest {
         subscription.setTypeSub(TypeSubscription.ANNUAL);
         subscription.setStartDate(LocalDate.now());
 
-        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
-
-        skier.setSubscription(subscription);
-
-        when(skierRepository.save(skier)).thenReturn(skier);
-
+        // You don't need to stub these save methods in this test.
         Skier result = skierServices.addSkier(skier);
 
         assertEquals(skier, result);
     }
+
     @Test
     public void testRetrieveAllSkiers() {
         List<Skier> skiers = new ArrayList<>();
         // Mock the behavior of the skierRepository to return a list of skiers
-        Mockito.when(skierRepository.findAll()).thenReturn(skiers);
+        when(skierRepository.findAll()).thenReturn(skiers);
 
         List<Skier> result = skierServices.retrieveAllSkiers();
 
