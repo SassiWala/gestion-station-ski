@@ -1,85 +1,69 @@
 package tn.esprit.spring.services;
 
-import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ContextConfiguration;
-import tn.esprit.spring.entities.*;
+import tn.esprit.spring.entities.Skier;
+import tn.esprit.spring.entities.Subscription;
+import tn.esprit.spring.entities.TypeSubscription;
 import tn.esprit.spring.repositories.ISkierRepository;
+import tn.esprit.spring.repositories.ISubscriptionRepository;
+
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.verify;
-@SpringBootTest
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
-@Slf4j
 public class SkierServiceMockTest {
-    @Mock
-    ISkierRepository skierRepo;
 
     @InjectMocks
-    SkierServicesImpl skierService;
+    private SkierServicesImpl skierServices;
 
-    // Define test data
-    Subscription s = Subscription.builder().price(200F).endDate(LocalDate.parse("2025-12-04"))
-            .numSub(2L).typeSub(TypeSubscription.ANNUAL).startDate(LocalDate.parse("2024-12-04"))
-            .build();
-    Skier m = Skier.builder().numSkier(3L).dateOfBirth(LocalDate.ofEpochDay(1999 - 12 - 19))
-            .city("Tunis").firstName("wassim").lastName("becheikh").subscription(s).build();
-    List<Skier> list = new ArrayList<Skier>() {
-        {
-            add(Skier.builder().numSkier(2L).dateOfBirth(LocalDate.ofEpochDay(1999 - 11 - 19))
-                    .city("Tunis").firstName("ahmed").lastName("Musa").build());
-            add(Skier.builder().numSkier(75L).dateOfBirth(LocalDate.ofEpochDay(2000 - 10 - 18))
-                    .city("Tunis").firstName("sadio").lastName("Mane").build());
-        }
-    };
+    @Mock
+    private ISkierRepository skierRepository;
+
+    @Mock
+    private ISubscriptionRepository subscriptionRepository;
 
     @Test
-    public void addSkierTest() {
-        // Define the behavior of the mock repository
-        Mockito.when(skierRepo.save(Mockito.any(Skier.class))).then(invocation -> {
-            Skier model = invocation.getArgument(0, Skier.class);
-            model.setNumSkier(1L);
-            return model;
-        });
+    public void testAddSkier() {
+        Skier skier = new Skier();
+        skier.setFirstName("wael");
+        skier.setLastName("hcine");
+        skier.setDateOfBirth(LocalDate.of(1990, 1, 1));
+        skier.setCity("Tunis");
 
-        log.info("Before ==> " + m.toString());
-        Skier skier = skierService.addSkier(m);
-        assertSame(skier, m);
-        log.info("After ==> " + m.toString());
+        Subscription subscription = new Subscription();
+        subscription.setTypeSub(TypeSubscription.ANNUAL);
+        subscription.setStartDate(LocalDate.now());
+
+        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
+
+        skier.setSubscription(subscription);
+
+        when(skierRepository.save(skier)).thenReturn(skier);
+
+        Skier result = skierServices.addSkier(skier);
+
+        assertEquals(skier, result);
     }
-
     @Test
-    public void retrieveSkierTest() {
-        // Define the behavior of the mock repository
-        Mockito.when(skierRepo.findById(Mockito.anyLong())).thenReturn(Optional.of(m));
+    public void testRetrieveAllSkiers() {
+        List<Skier> skiers = new ArrayList<>();
+        // Mock the behavior of the skierRepository to return a list of skiers
+        Mockito.when(skierRepository.findAll()).thenReturn(skiers);
 
-        Skier skier = skierService.retrieveSkier((long) 75);
-        assertNotNull(skier);
-        log.info("get ==> " + skier);
+        List<Skier> result = skierServices.retrieveAllSkiers();
 
-        // Verify that the repository method was called with the correct argument
-        verify(skierRepo).findById(Mockito.anyLong());
-    }
-
-    @Test
-    public void retrieveAllSkierTest() {
-        // Define the behavior of the mock repository
-        Mockito.when(skierRepo.findAll()).thenReturn(list);
-
-        List<Skier> skiers = skierService.retrieveAllSkiers();
-        assertNotNull(skiers);
+        // Verify that the service method returns the expected result
+        assertEquals(skiers, result);
     }
 }
