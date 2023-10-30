@@ -32,6 +32,19 @@ pipeline{
         sh "mvn deploy -Dmaven.test.skip"
       }
     }
+     stage("Docker Image"){
+      steps{
+        sh "docker build -t wsassi/gestion-station-ski-1.0 ."
+      }
+    }
+    stage("Docker HUB"){
+      steps{
+        sh ' ' '
+        docker login wsassi 
+        docker push wsassi/gestion-station-ski-1.0
+        ' ' '
+      }
+    }
     
   }
 }
