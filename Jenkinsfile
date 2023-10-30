@@ -1,5 +1,6 @@
 pipeline {
-  agent any;
+  agent any
+  
   stages {
     stage("GIT") {
       steps {
@@ -27,7 +28,25 @@ pipeline {
         sh "mvn deploy -Dmaven.test.skip=true"
       }
     }
+    stage("BUILD DOCKER IMAGE") {
+      steps {
+        sh 'docker build -t rayzox/gestion-station-ski:latest .'
+      }
+    }
+    stage('Deploy Docker Image') {
+      steps {
+        withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
+          sh '''
+            docker login -u rayzox -p $DOCKER_PASSWORD
+            docker push rayzox/gestion-station-ski
+          '''
+        }
+      }
+    }
+    stage('Docker Compose') {
+      steps {
+        sh 'docker-compose up -d'
+      }
+    }
   }
 }
-
-
