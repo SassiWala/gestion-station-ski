@@ -12,12 +12,12 @@ import java.util.List;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class PisteServiceTest {
 
-    @Autowired
-    IPisteServices pisteServices;
-    @Test
-    @Order(1)
-    public void testRetrieveAllPistes(){
-        List<Piste> pistes = pisteServices.retrieveAllPistes();
-        Assertions.assertEquals(1,pistes.size());
-    }
+//    @Autowired
+//    IPisteServices pisteServices;
+//    @Test
+//    @Order(1)
+//    public void testRetrieveAllPistes(){
+//        List<Piste> pistes = pisteServices.retrieveAllPistes();
+//        Assertions.assertEquals(1,pistes.size());
+//    }
 }

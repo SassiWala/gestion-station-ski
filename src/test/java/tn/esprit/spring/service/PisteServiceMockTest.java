@@ -36,11 +36,34 @@ public class PisteServiceMockTest {
         }
     };
     @Test
-    public void retrieveUserTest(){
+    public void retrievePisteTest(){
         Mockito.when(pisteRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(piste));
         Piste piste1 = pisteServices.retrievePiste(Long.valueOf(1));
+        Assertions.assertNotNull(piste1);
         Assertions.assertEquals(piste1,piste);
 
-
     }
+    @Test
+    public void retrieveAllPistesTest() {
+        Mockito.when(pisteRepository.findAll()).thenReturn(pistes);
+        List<Piste> allPistes = pisteServices.retrieveAllPistes();
+        Assertions.assertTrue(!allPistes.isEmpty());
+        Assertions.assertEquals(pistes.size(), allPistes.size());
+    }
+    @Test
+    public void removePisteTest() {
+        Long numPiste = Long.valueOf(1);
+        pisteServices.removePiste(numPiste);
+        Mockito.verify(pisteRepository, Mockito.times(1)).deleteById(numPiste);
+        Assertions.assertFalse(pistes.contains(piste));
+    }
+    @Test
+    public void addPisteTest() {
+        Mockito.when(pisteRepository.save(Mockito.any(Piste.class))).thenReturn(piste);
+
+        Piste addedPiste = pisteServices.addPiste(piste);
+
+        Assertions.assertSame(piste, addedPiste);
+    }
+
 }
