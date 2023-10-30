@@ -6,7 +6,7 @@ services:
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
-      - 3307:3306
+      - "3307:3306"
     volumes:
       - db:/var/lib/mysql
 
@@ -16,9 +16,9 @@ services:
     image: wsassi/gestion-station-ski-1.0
     restart: on-failure
     environment:
-      MYSQL_ROOT_PASSWORD: 
+      MYSQL_ROOT_PASSWORD: ""  # Set to an empty string
     ports:
-      - 6868:8082
+      - "6868:8082"
     stdin_open: true
     tty: true
 
