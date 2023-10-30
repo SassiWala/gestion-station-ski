@@ -22,5 +22,12 @@ pipeline {
         sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
       }
     }
+    stage("NEXUS") {
+      steps {
+        sh "mvn deploy -Dmaven.test.skip=true"
+      }
+    }
   }
 }
+
+
