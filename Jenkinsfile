@@ -10,7 +10,7 @@ pipeline {
     }
     stage("MAVEN BUILD") {
       steps {
-        sh 'mvn clean install -Dmaven.test.skip=true'
+        sh 'mvn clean install'
       }
     }
     stage("SONARQUBE") {
@@ -25,7 +25,7 @@ pipeline {
     }
     stage("NEXUS") {
       steps {
-        sh "mvn deploy -Dmaven.test.skip=true"
+        sh "mvn deploy"
       }
     }
     stage("BUILD DOCKER IMAGE") {
