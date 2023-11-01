@@ -68,7 +68,7 @@
 		</repository>
 	</distributionManagement>
 	<build>
-	<finalName>5ERP-BI6-gestion-station-ski</finalName>
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
