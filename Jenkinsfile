@@ -29,7 +29,7 @@ pipeline{
     //}
     stage("Nexus"){
       steps{
-        sh "mvn deploy -Pdeploy-profile -Dmaven.test.skip -Drepository.username=admin -Drepository.password=nexus"
+        sh "mvn deploy -DrepositoryId=nexus-server -Durl=https://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
       }
     }
     //  stage("Docker Image"){
