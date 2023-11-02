@@ -65,10 +65,7 @@
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
-			<version>0.10.0</version> <!-- Replace with the actual version you want to use -->
 		</dependency>
-
-
 	</dependencies>
 	<!-- Deploy to Nexus -->
 	<distributionManagement>
