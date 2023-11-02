@@ -54,13 +54,18 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<distributionManagement>
-		<repository>
-			<id>deploymentRepo</id>
-			<name>Nexus Repository</name>
-			<url>http://192.168.33.10:8081/repository/maven-releases/</url>
-		</repository>
-	</distributionManagement>
+	<profiles>
+		<profile>
+			<id>deploy-profile</id>
+			<distributionManagement>
+				<repository>
+					<id>deploymentRepo</id>
+					<url>http://192.168.33.10:8081/repository/maven-releases/</url>
+				</repository>
+			</distributionManagement>
+		</profile>
+	</profiles>
+
 	<build>
 		<plugins>
 			<plugin>
@@ -75,6 +80,7 @@
 					</excludes>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 
