@@ -40,7 +40,7 @@ public class SkierServiceMockTest {
     private ISubscriptionRepository subscriptionRepository;
 
     @Test
-    public void testAddSkier() {
+    private void testAddSkier() {
         Skier skier = new Skier();
         skier.setFirstName("wael");
         skier.setLastName("hcine");
@@ -72,7 +72,7 @@ public class SkierServiceMockTest {
 
 
     @Test
-    public void testRetrieveAllSkiers() {
+    private void testRetrieveAllSkiers() {
         // Create a list of Skier objects using the parameterized constructor
         List<Skier> skiers = new ArrayList<>();
         skiers.add(new Skier(null,
@@ -95,7 +95,7 @@ public class SkierServiceMockTest {
     }
 
     @Test
-    public void testRetrieveSkier() {
+    private void testRetrieveSkier() {
         // Create a sample Skier object for testing
         Long skierId = 1L;
         Skier sampleSkier = new Skier(skierId, "John", "Doe", LocalDate.of(1990, 1, 1), "City", null, null, null);
@@ -113,7 +113,7 @@ public class SkierServiceMockTest {
         assertEquals(skierId, retrievedSkier.getNumSkier());
     }
     @Test
-    public void testRemoveSkier() {
+    private void testRemoveSkier() {
         // Create a sample skier ID for testing
         Long skierIdToRemove = 1L;
 
