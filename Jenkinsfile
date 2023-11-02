@@ -39,6 +39,7 @@ pipeline{
     }
     stage("Docker HUB"){
       steps{
+        sh " docker login -u=wsassi -p=Wala123456"
         sh " docker push wsassi/gestion-station-ski-1.0 "
       }
     }
