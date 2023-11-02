@@ -31,16 +31,16 @@ public class InstructorServiceMockitoTest {
 
     @InjectMocks
     private InstructorServicesImpl instructorServices;
-
+/*
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-    }
+    }*/
     @Autowired
     IInstructorServices ii;
 
-    @Test
-    public void testAddInstructor() {
+   @Test
+   public void testAddInstructor() {
         // Arrange
         Instructor instructor = new Instructor();
         Mockito.when(instructorRepository.save(instructor)).thenReturn(instructor);
@@ -52,18 +52,7 @@ public class InstructorServiceMockitoTest {
         Assertions.assertEquals(instructor, result);
     }
 
-    /*@Test
-    public void testRetrieveAllInstructors() {
-        // Arrange
-        List<Instructor> instructors = List.of(new Instructor(), new Instructor());
-        Mockito.when(instructorRepository.findAll()).thenReturn(instructors);
 
-        // Act
-        List<Instructor> result = instructorServices.retrieveAllInstructors();
-
-        // Assert
-        Assertions.assertEquals(2, result.size());
-    }*/
     @Test
     public void testRetrieveInstructor() {
         // Arrange
