@@ -7,13 +7,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+
 import org.mockito.junit.jupiter.MockitoExtension;
 import tn.esprit.spring.entities.*;
 import tn.esprit.spring.repositories.ISkierRepository;
-import tn.esprit.spring.repositories.ISubscriptionRepository;
 
-import java.util.logging.Logger;
+
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +36,10 @@ public class SkierServiceMockTest {
     @Mock
     private ISkierRepository skierRepository;
 
-    @Mock
-    private ISubscriptionRepository subscriptionRepository;
+
 
     @Test
-    private void testAddSkier() {
+    public void testAddSkier() {
         Skier skier = new Skier();
         skier.setFirstName("wael");
         skier.setLastName("hcine");
@@ -72,7 +71,7 @@ public class SkierServiceMockTest {
 
 
     @Test
-    private void testRetrieveAllSkiers() {
+    public void testRetrieveAllSkiers() {
         // Create a list of Skier objects using the parameterized constructor
         List<Skier> skiers = new ArrayList<>();
         skiers.add(new Skier(null,
@@ -95,7 +94,7 @@ public class SkierServiceMockTest {
     }
 
     @Test
-    private void testRetrieveSkier() {
+    public void testRetrieveSkier() {
         // Create a sample Skier object for testing
         Long skierId = 1L;
         Skier sampleSkier = new Skier(skierId, "John", "Doe", LocalDate.of(1990, 1, 1), "City", null, null, null);
@@ -113,7 +112,7 @@ public class SkierServiceMockTest {
         assertEquals(skierId, retrievedSkier.getNumSkier());
     }
     @Test
-    private void testRemoveSkier() {
+    public void testRemoveSkier() {
         // Create a sample skier ID for testing
         Long skierIdToRemove = 1L;
 
