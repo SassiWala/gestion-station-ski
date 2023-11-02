@@ -1,13 +1,16 @@
 package tn.esprit.spring.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import tn.esprit.spring.entities.Instructor;
@@ -19,8 +22,8 @@ import tn.esprit.spring.services.InstructorServicesImpl;
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
-@TestMethodOrder(OrderAnnotation.class)
+@ExtendWith(MockitoExtension.class)
+@Slf4j
 public class InstructorServiceMockitoTest {
 
     @Mock
