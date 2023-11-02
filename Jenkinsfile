@@ -29,7 +29,7 @@ pipeline{
     //}
     stage("Nexus"){
       steps{
-        sh "mvn deploy -Pdeploy-profile"
+        sh "mvn deploy -Pdeploy-profile -Dmaven.test.skip"
       }
     }
     //  stage("Docker Image"){
