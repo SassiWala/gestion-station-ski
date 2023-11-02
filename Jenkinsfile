@@ -32,11 +32,11 @@ pipeline{
         sh "mvn deploy -Durl=https://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
       }
     }
-    //  stage("Docker Image"){
-    //   steps{
-    //     sh "docker build -t wsassi/gestion-station-ski-1.0 ."
-    //   }
-    // }
+     stage("Docker Image"){
+      steps{
+        sh "docker build -t wsassi/gestion-station-ski-1.0 ."
+      }
+    }
     // stage("Docker HUB"){
     //   steps{
     //     sh ' ' '
