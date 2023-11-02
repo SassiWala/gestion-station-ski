@@ -75,6 +75,13 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<altDeploymentRepository>deploymentRepo::default::http://localhost:8081/repository/maven-releases/</altDeploymentRepository>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
