@@ -2,7 +2,7 @@ pipeline{
   agent any;
   environment {
     SONAR_URL = 'http://192.168.33.10:9000' // Replace with your SonarQube URL
-    SONAR_LOGIN ="squ_90839aa46030b9296ab6aeeb0fb0ae0bc26567a9" // Create a secret credential for your SonarQube token in Jenkins
+    SONAR_LOGIN ="squ_d606c542b447d9f15a8b27a0fa1d7d5cdd96c3a1" // Create a secret credential for your SonarQube token in Jenkins
   }
   stages{
     stage("Git"){
