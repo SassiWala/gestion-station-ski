@@ -29,7 +29,7 @@ pipeline{
     //}
     stage("Nexus"){
       steps{
-        sh "mvn deploy -Dmaven.test.skip"
+        sh "mvn deploy -Dmaven.test.skip -Drepository.username=admin -Drepository.password=nexus"
       }
     }
     //  stage("Docker Image"){
