@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@SpringBootTest
+
 @ExtendWith(MockitoExtension.class)
 @Slf4j
 public class PisteServiceMockTest {
