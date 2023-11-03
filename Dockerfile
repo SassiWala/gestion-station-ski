@@ -1,4 +1,4 @@
 FROM openjdk:11-jdk
 EXPOSE 8089
-ADD ./target/gestion-station-ski-1.0.jar gestion-station-ski.jar
-ENTRYPOINT ["java","-jar","/gestion-station-ski.jar"]
+ADD ./target/5ERPBI1-G4-gestion-station-ski.jar WaelHcine-5ERPBI1-G4-gestion-station-ski.jar
+ENTRYPOINT ["java","-jar","/WaelHcine-5ERPBI1-G4-gestion-station-ski.jar"]
