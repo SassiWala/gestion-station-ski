@@ -34,11 +34,7 @@ public class InstructorServiceMockitoTest {
 
     @InjectMocks
     private InstructorServicesImpl instructorServices;
-/*
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }*/
+
     @Autowired
     IInstructorServices ii;
 
