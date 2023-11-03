@@ -1,16 +1,11 @@
 package tn.esprit.spring.service;
 
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import tn.esprit.spring.entities.Piste;
-import tn.esprit.spring.services.IPisteServices;
-
-import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class PisteServiceTest {
+public class RegistrationServiceTest {
 
 //    @Autowired
 //    IPisteServices pisteServices;
