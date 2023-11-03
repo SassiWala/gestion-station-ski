@@ -1,10 +1,12 @@
 package tn.esprit.spring.Services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import tn.esprit.spring.entities.Subscription;
@@ -13,11 +15,14 @@ import tn.esprit.spring.repositories.ISubscriptionRepository;
 import tn.esprit.spring.services.SubscriptionServicesImpl;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,31 +54,42 @@ public class SubscriptionServiceMockTest {
         verify(subscriptionRepository, times(1)).save(subscription);
 
         // Verify that the result is not null
-        assertNotNull(result);
+        Assertions.assertNotNull(result);
 
         // Verify that the result is the same as the input skier
-        assertEquals(subscription, result);
+        Assertions.assertEquals(subscription, result);
     }
-@Test
-    public void testUpdateSubscription() {
-        // Créer un mock de la dépendance subscriptionRepository
-        ISubscriptionRepository subscriptionRepository = mock(ISubscriptionRepository.class);
+    @Test
+    public void retrieveSubscriptionByIdTest() {
+        Long numSubscription = 1L; // Replace with a valid subscription ID
+        Subscription subscription = new Subscription(1L,LocalDate.parse("2023/02/02", DateTimeFormatter.ofPattern("yyyy/MM/dd")),LocalDate.parse("2023/08/02",DateTimeFormatter.ofPattern("yyyy/MM/dd")),25F,TypeSubscription.MONTHLY);
+        Mockito.when(subscriptionRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(subscription));
 
+        Subscription retrievedSubscription = subscriptionServices.retrieveSubscriptionById(numSubscription);
 
-        // Créer un objet Subscription fictif pour le test
-        Subscription subscription = new Subscription();
-
-        // Configurer le comportement du mock
-        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
-
-        // Appeler la méthode à tester
-        Subscription result = subscriptionServices.updateSubscription(subscription);
-
-        // Vérifier que la méthode save du mock a été appelée avec les bons arguments
-        verify(subscriptionRepository).save(subscription);
-
-        // Vérifier que le résultat renvoyé par la méthode est correct
-        assertEquals(subscription, result);
+        Assertions.assertNotNull(retrievedSubscription);
+        Assertions.assertEquals(subscription, retrievedSubscription);
     }
+
+
+
+    @Test
+    public void retrieveSubscriptionsByDatesTest() {
+        LocalDate startDate = LocalDate.now(); // Replace with the desired start date
+        LocalDate endDate = LocalDate.now().plusMonths(3); // Replace with the desired end date
+        List<Subscription> subscriptions = new ArrayList<Subscription>(){{
+            add(new Subscription(LocalDate.parse("2023/12/02", DateTimeFormatter.ofPattern("yyyy/MM/dd")),LocalDate.parse("2023/08/02",DateTimeFormatter.ofPattern("yyyy/MM/dd")),25F,TypeSubscription.SEMESTRIEL));
+            add(new Subscription(LocalDate.parse("2023/02/02",DateTimeFormatter.ofPattern("yyyy/MM/dd")),LocalDate.parse("2023/08/02",DateTimeFormatter.ofPattern("yyyy/MM/dd")),25F,TypeSubscription.MONTHLY));
+        }} ;
+        Mockito.when(subscriptionRepository.getSubscriptionsByStartDateBetween(startDate, endDate)).thenReturn(subscriptions);
+
+        List<Subscription> retrievedSubscriptions = subscriptionServices.retrieveSubscriptionsByDates(startDate, endDate);
+
+        Assertions.assertNotNull(retrievedSubscriptions);
+        Assertions.assertEquals(subscriptions, retrievedSubscriptions);
+    }
+
+    // You can similarly create tests for other methods like updateSubscription, retrieveSubscriptions, and showMonthlyRecurringRevenue.
 }
+
     //
