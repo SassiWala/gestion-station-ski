@@ -18,10 +18,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @Slf4j
@@ -43,7 +40,6 @@ public class SubscriptionServiceMockTest {
         subscription.setPrice(15616F);
         subscription.setTypeSub(TypeSubscription.ANNUAL);
 
-
         // Mock the repository's save method
         when(subscriptionRepository.save(subscription)).thenReturn(subscription);
 
@@ -58,5 +54,26 @@ public class SubscriptionServiceMockTest {
         // Verify that the result is the same as the input skier
         assertEquals(subscription, result);
     }
-    //
+
+    public void testUpdateSubscription() {
+        // Créer un mock de la dépendance subscriptionRepository
+        ISubscriptionRepository subscriptionRepository = mock(ISubscriptionRepository.class);
+
+
+        // Créer un objet Subscription fictif pour le test
+        Subscription subscription = new Subscription();
+
+        // Configurer le comportement du mock
+        when(subscriptionRepository.save(subscription)).thenReturn(subscription);
+
+        // Appeler la méthode à tester
+        Subscription result = subscriptionServices.updateSubscription(subscription);
+
+        // Vérifier que la méthode save du mock a été appelée avec les bons arguments
+        verify(subscriptionRepository).save(subscription);
+
+        // Vérifier que le résultat renvoyé par la méthode est correct
+        assertEquals(subscription, result);
+    }
 }
+    //
