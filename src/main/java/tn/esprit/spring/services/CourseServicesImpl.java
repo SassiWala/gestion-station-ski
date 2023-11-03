@@ -24,6 +24,11 @@ public class CourseServicesImpl implements  ICourseServices{
     }
 
     @Override
+    public void removeCourse(Long numCourse) {
+        courseRepository.deleteById(numCourse);
+    }
+
+    @Override
     public Course updateCourse(Course course) {
         return courseRepository.save(course);
     }
