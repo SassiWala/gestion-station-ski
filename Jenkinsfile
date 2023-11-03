@@ -37,5 +37,5 @@ pipeline{
          sh "docker build -t eyasaid/gestion-station-ski-1.0 ."
        }
      }
-
+}
 }
