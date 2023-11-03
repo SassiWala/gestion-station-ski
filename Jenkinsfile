@@ -37,5 +37,14 @@ pipeline{
          sh "docker build -t eyasaid/gestion-station-ski-1.0 ."
        }
      }
-}
+ stage('Deploy Docker Image') {
+      steps {
+        withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
+          sh '''
+            docker login -u eyasaid -p $DOCKER_PASSWORD
+            docker push eyasaid/gestion-station-ski-1.0
+          '''
+        }
+      }
+    }}
 }
