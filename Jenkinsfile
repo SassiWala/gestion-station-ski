@@ -2,7 +2,6 @@ pipeline {
   agent any
   
   stages {
-    stage("Parallel Stages") {
       parallel {
         stage("GIT") {
           steps {
@@ -16,7 +15,6 @@ pipeline {
           }
         }
       }
-    }
     stage("SONARQUBE") {
       steps {
         sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
