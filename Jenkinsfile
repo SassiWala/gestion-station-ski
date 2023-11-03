@@ -27,10 +27,15 @@ pipeline{
             sh "mvn test"
           }
         }
-  }
   stage("Nexus"){
         steps{
           sh "mvn deploy -Durl=https://192.168.56.2/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
         }
       }
+ stage("Docker Image"){
+       steps{
+         sh "docker build -t eyasaid/gestion-station-ski-1.0 ."
+       }
+     }
+
 }
