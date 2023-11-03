@@ -54,7 +54,7 @@ public class SubscriptionServiceMockTest {
         // Verify that the result is the same as the input skier
         assertEquals(subscription, result);
     }
-
+@Test
     public void testUpdateSubscription() {
         // Créer un mock de la dépendance subscriptionRepository
         ISubscriptionRepository subscriptionRepository = mock(ISubscriptionRepository.class);
