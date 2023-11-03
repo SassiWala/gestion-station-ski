@@ -2,22 +2,20 @@ pipeline {
   agent any
   
   stages {
-      parallel {
-        stage("GIT") {
-          steps {
-            sh 'git checkout WHBranch'
-            sh 'git pull origin WHBranch'
-          }
-        }
-        stage("MAVEN BUILD") {
-          steps {
-            sh 'mvn clean install'
-          }
-        }
+    stage("GIT") {
+      steps {
+        sh 'git checkout WHBranch'
+        sh 'git pull origin WHBranch'
       }
+    }
+    stage("MAVEN BUILD") {
+      steps {
+        sh 'mvn clean install'
+      }
+    }
     stage("SONARQUBE") {
       steps {
-        sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
       }
     }
     stage("MOCKITO") {
