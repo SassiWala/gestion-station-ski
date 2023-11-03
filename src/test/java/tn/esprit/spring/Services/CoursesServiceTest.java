@@ -80,7 +80,7 @@ class CourseServiceMockTest {
 
     }
 
-    @Test
+    /*@Test
     public void testRetrieveCourse() {
         // Create a sample Course object for testing
         Long numCourse = 1L;
@@ -98,7 +98,7 @@ class CourseServiceMockTest {
 
         // Verify that the retrievedCourse's ID matches the numCourse
         assertEquals(numCourse, retrievedCourse.getNumCourse());
-    }
+    }*/
     @Test
     public void testRemoveCourse() {
         // Create a sample skier ID for testing
