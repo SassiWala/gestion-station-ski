@@ -8,11 +8,7 @@ pipeline {
         sh 'git pull origin amineBranch'
       }
     }
-    stage("MAVEN BUILD") {
-      steps {
-        sh 'mvn clean install'
-      }
-    }
+
     stage("SONARQUBE") {
       steps {
        sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
