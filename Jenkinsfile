@@ -14,6 +14,7 @@ pipeline{
     stage("Maven Clean and Compile"){
       steps{
         sh 'mvn clean compile'
+        sh 'mvn package -DskipTests'
       }
     }
     stage("SonarQube"){
