@@ -35,7 +35,7 @@ pipeline{
     }
     stage("Docker HUB"){
       steps{
-        sh "docker login -u wsassi --password-stdin"
+        sh "docker login "
         sh " docker push wsassi/gestion-station-ski-1.0 "
       }
     }
