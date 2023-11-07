@@ -79,13 +79,6 @@
 	<build>
  	<finalName>5ERPBI1-G4-gestion-station-ski</finalName>
 		 <plugins>
-        <!-- SonarQube Scanner Plugin -->
-        <plugin>
-            <groupId>org.sonarsource.scanner.maven</groupId>
-            <artifactId>sonar-maven-plugin</artifactId>
-            <version>3.8.0.2131</version>
-        </plugin>
-        
         <!-- JaCoCo Plugin -->
         <plugin>
             <groupId>org.jacoco</groupId>
