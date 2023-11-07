@@ -3,6 +3,9 @@ pipeline {
   tools {
     maven 'M2_HOME'
   }
+  environment {
+    SONARQUBE_URL = 'http://192.168.56.2:9000' 
+  }
   stages {
     stage("GIT") {
       steps {
@@ -17,7 +20,7 @@ pipeline {
     }
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.host.url=$SONARQUBE_URL"
       }
     }
     stage("MOCKITO") {
