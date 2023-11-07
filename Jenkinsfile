@@ -30,7 +30,7 @@ pipeline {
     }
     stage("BUILD DOCKER IMAGE") {
       steps {
-        sh 'docker build -t rayzox/WaelHcine-5ERPBI1-G4-gestion-station-ski:latest .'
+        sh 'docker build -t rayzox/waelhcine-5erpbi1-g4-gestion-station-ski:latest .'
       }
     }
     stage('Deploy Docker Image') {
@@ -38,7 +38,7 @@ pipeline {
         withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
           sh '''
             docker login -u rayzox -p $DOCKER_PASSWORD
-            docker push rayzox/WaelHcine-5ERPBI1-G4-gestion-station-ski
+            docker push rayzox/waelhcine-5erpbi1-g4-gestion-station-ski
           '''
         }
       }
