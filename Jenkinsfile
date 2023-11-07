@@ -32,7 +32,7 @@ pipeline {
     }
       stage("Nexus"){
       steps{
-        sh "mvn deploy -Durl=http://192.168.56.2:8081/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus"
+        sh "mvn deploy -Drepository.username=admin -Drepository.password=nexus"
       }
     }
     stage("BUILD DOCKER IMAGE") {
