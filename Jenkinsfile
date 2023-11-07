@@ -30,10 +30,14 @@ pipeline {
       }
     }
     stage("NEXUS") {
-      steps {
-        sh "mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_URL}/repository/maven-releases/"
-      }
+  steps {
+    withCredentials([
+      usernamePassword(credentialsId: 'nexus-credentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')
+    ]) {
+      sh "mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_URL}/repository/maven-releases/ -Dusername=$NEXUS_USERNAME -Dpassword=$NEXUS_PASSWORD"
     }
+  }
+}
     stage("BUILD DOCKER IMAGE") {
       steps {
         sh 'docker build -t rayzox/WaelHcine-5ERPBI1-G4-gestion-station-ski:latest .'
