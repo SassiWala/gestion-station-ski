@@ -1,13 +1,6 @@
 pipeline {
   agent any
-  tools {
-    // Define the Maven tool to use
-    maven 'M2_HOME'
-  }
-  environment {
-    SONARQUBE_URL = 'http://192.168.56.2:9000'
-    NEXUS_URL = 'http://192.168.56.2:8081'
-  }
+  
   stages {
     stage("GIT") {
       steps {
@@ -22,7 +15,7 @@ pipeline {
     }
     stage("SONARQUBE") {
       steps {
-        sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar -Dsonar.host.url=$SONARQUBE_URL"
+       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
       }
     }
     stage("MOCKITO") {
@@ -30,9 +23,9 @@ pipeline {
         sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
       }
     }
-      stage("Nexus"){
-      steps{
-        sh "mvn deploy -Durl=https://192.168.56.2/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
+    stage("NEXUS") {
+      steps {
+        sh "mvn deploy"
       }
     }
     stage("BUILD DOCKER IMAGE") {
