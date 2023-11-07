@@ -4,7 +4,8 @@ pipeline {
     maven 'M2_HOME'
   }
   environment {
-    SONARQUBE_URL = 'http://192.168.56.2:9000' 
+    SONARQUBE_URL = 'http://192.168.56.2:9000'
+    NEXUS_URL = 'http://192.168.56.2:8081'
   }
   stages {
     stage("GIT") {
@@ -30,7 +31,7 @@ pipeline {
     }
     stage("NEXUS") {
       steps {
-        sh "mvn deploy"
+        sh "mvn deploy -DaltDeploymentRepository=nexus::default::${NEXUS_URL}/repository/maven-releases/"
       }
     }
     stage("BUILD DOCKER IMAGE") {
