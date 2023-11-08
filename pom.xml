@@ -77,7 +77,7 @@
 		</repository>
 	</distributionManagement>
 	<build>
- 	<finalName>5ERPBI1-G4-gestion-station-ski</finalName>
+ 	<finalName>5erpbi1-g4-gestion-station-ski</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
