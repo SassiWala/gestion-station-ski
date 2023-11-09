@@ -29,7 +29,7 @@ pipeline {
     stage("Publish to Nexus Repository Manager") {
   steps {
     script {
-      def pom = readMavenPom file: "./pom.xml" // Make sure the path is correct
+      def pom = readMavenPom file: "/pom.xml" // Make sure the path is correct
       def filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
       if (filesByGlob.size() > 0) {
         def artifactPath = filesByGlob[0].path
