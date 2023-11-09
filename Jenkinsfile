@@ -14,10 +14,12 @@ pipeline {
       }
     }
     stage("SONARQUBE") {
-      steps {
-       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
-      }
+  steps {
+    withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
+      sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
     }
+  }
+}
     stage("MOCKITO") {
       steps {
         sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
