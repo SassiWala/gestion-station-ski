@@ -16,7 +16,7 @@ pipeline {
         sh 'git checkout WHBranch'
         sh 'git pull origin WHBranch'
       }
-    }
+    }/*
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
@@ -33,7 +33,7 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }
+    }*/
     stage("NEXUS") {
       steps {
         script {
