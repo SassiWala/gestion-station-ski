@@ -20,7 +20,7 @@ pipeline {
     mail to: "wael.hcine@esprit.tn",
          subject: "Pipeline Status: ${currentBuild.currentResult}",
          body: "Pipeline Status: ${currentBuild.currentResult}",
-         attachLog: true
+         
   }
 }
 
