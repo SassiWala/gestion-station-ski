@@ -1,26 +1,30 @@
 pipeline {
   agent any
-  environment {
-    NEXUS_VERSION = "nexus3"
-    NEXUS_PROTOCOL = "http"
-    NEXUS_URL = "http://192.168.56.2:8081"
-    NEXUS_REPOSITORY = "maven-releases"
-    NEXUS_CREDENTIAL_ID = "Nexus-Creds"
-    VERSION = "1.0"
-
-  }
+  
   stages {
     stage("GIT") {
       steps {
         sh 'git checkout WHBranch'
         sh 'git pull origin WHBranch'
       }
-    }/*
+    }
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
       }
     }
+
+     post {
+    always {
+      emailext(
+        subject: "Pipeline Status: ${currentBuild.currentResult}",
+        body: "Pipeline Status: ${currentBuild.currentResult}",
+        to: "your-email@example.com",
+        attachLog: true
+      )
+    }
+  }
+}/*
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
@@ -32,44 +36,12 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }*/
+    }
     stage("NEXUS") {
-  steps {
-    script {
-      pom = readMavenPom file: "pom.xml";
-      finalName = pom.build.finalName;
-      artifactPath = "target/${finalName}.${pom.packaging}";
-      artifactExists = fileExists artifactPath;
-      if (artifactExists) {
-        echo "*** File: ${artifactPath}, group: ${pom.groupId}, packaging: ${pom.packaging}, version ${VERSION}";
-        nexusArtifactUploader(
-          nexusVersion: NEXUS_VERSION,
-          protocol: NEXUS_PROTOCOL,
-          nexusUrl: NEXUS_URL,
-          groupId: pom.groupId,
-          version: VERSION,
-          repository: NEXUS_REPOSITORY,
-          credentialsId: NEXUS_CREDENTIAL_ID,
-          artifacts: [
-            [artifactId: pom.artifactId,
-              classifier: '',
-              file: artifactPath,
-              type: pom.packaging
-            ],
-            [artifactId: pom.artifactId,
-              classifier: '',
-              file: "pom.xml",
-              type: "pom"
-            ]
-          ]
-        );
-      } else {
-        error "*** File: ${artifactPath}, could not be found";
+      steps {
+        sh "mvn deploy"
       }
     }
-  }
-}
-
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -90,5 +62,5 @@ pipeline {
         sh 'docker-compose up -d'
       }
     }
-  }
+  }*/
 }
