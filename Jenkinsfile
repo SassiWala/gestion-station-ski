@@ -8,22 +8,15 @@ pipeline {
         sh 'git pull origin WHBranch'
       }
     }
+    /*
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
       }
     }
   }
-   post {
-  always {
-    echo "Pipeline Status: ${currentBuild.currentResult}"
-    mail to: "wael.hcine@esprit.tn",
-         subject: "Pipeline Status: ${currentBuild.currentResult}",
-         body: "Pipeline Status: ${currentBuild.currentResult}"
-         
-  }
-}}
-/*
+  
+
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
@@ -35,12 +28,22 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }
-    stage("NEXUS") {
-      steps {
-        sh "mvn deploy"
-      }
-    }
+    }*/
+    stage("NEXUS DEPLOY") {
+            steps {
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    def groupId = pom.getGroupId()
+                    def artifactId = pom.getArtifactId()
+                    def version = pom.getVersion()
+                    def artifactFile = "${artifactId}-${version}.jar"
+                    def repositoryId = 'maven-releases' // Replace with your Nexus repository ID
+                    def nexusUrl = 'https://your-nexus-url/repository/' + repositoryId
+
+                    sh "mvn deploy:deploy-file -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -Dfile=target/${artifactFile} -DrepositoryId=${repositoryId} -Durl=${nexusUrl}"
+                }
+            }
+        }
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -61,5 +64,13 @@ pipeline {
         sh 'docker-compose up -d'
       }
     }
-  }*/
+     post {
+  always {
+    echo "Pipeline Status: ${currentBuild.currentResult}"
+    mail to: "wael.hcine@esprit.tn",
+         subject: "Pipeline Status: ${currentBuild.currentResult}",
+         body: "Pipeline Status: ${currentBuild.currentResult}"
+         
+  }
+}}
 
