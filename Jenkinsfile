@@ -22,7 +22,7 @@ pipeline {
 }
     stage("MOCKITO") {
       steps {
-        sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
+        sh "mvn test "
       }
     }
     stage("NEXUS") {
