@@ -11,9 +11,8 @@ pipeline {
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
-        sh 'ls -l /target'
       }
-    }/*
+    }
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
@@ -26,17 +25,9 @@ pipeline {
         sh "mvn test"
       }
     }
-     stage("NEXUS DEPLOY") {
+    stage("NEXUS") {
       steps {
-        script {
-          def pom = readMavenPom file: 'pom.xml'
-          def groupId = pom.getGroupId()
-          def artifactId = pom.getBuild().getFinalName()
-          def version = pom.getVersion()
-          def packaging = pom.getPackaging()
-
-          sh "mvn deploy:deploy-file -DgroupId=$groupId -DartifactId=$artifactId -Dversion=$version -Dpackaging=$packaging -Dfile=target/$artifactId-$version.$packaging -Durl=http://192.168.56.2:8081/repository/maven-releases/"
-        }
+        sh "mvn deploy"
       }
     }
     stage("BUILD DOCKER IMAGE") {
@@ -58,6 +49,6 @@ pipeline {
       steps {
         sh 'docker-compose up -d'
       }
-    }*/
+    }
   }
 }
