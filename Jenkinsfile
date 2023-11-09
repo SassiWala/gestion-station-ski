@@ -7,13 +7,35 @@ pipeline {
         sh 'git checkout WHBranch'
         sh 'git pull origin WHBranch'
       }
-    }/*
+    }
+     stage("Read POM") {
+        steps {
+            script {
+                def pom = readFile('pom.xml')
+                def matcher
+
+                // Extract artifactId and version from the POM
+                if (pom =~ /<artifactId>(.*?)<\/artifactId>/) {
+                    artifactId =  =~ /<artifactId>(.*?)<\/artifactId>/.getAt(1)
+                }
+                if (pom =~ /<version>(.*?)<\/version>/) {
+                    version =  =~ /<version>(.*?)<\/version>/.getAt(1)
+                }
+
+                // Print the extracted values (for verification)
+                echo "Artifact ID: ${artifactId}"
+                echo "Version: ${version}"
+
+                // You can use these variables in subsequent stages
+            }
+        }
+    }
+    /*
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
       }
     }
-
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
@@ -25,40 +47,12 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }*/
-    stage("Publish to Nexus Repository Manager") {
-  steps {
-    script {
-      def pom = readMavenPom file: "/pom.xml" // Make sure the path is correct
-      def filesByGlob = findFiles(glob: "target/*.${pom.packaging}")
-      if (filesByGlob.size() > 0) {
-        def artifactPath = filesByGlob[0].path
-        def artifactExists = fileExists artifactPath
-        if (artifactExists) {
-          echo "Uploading ${artifactPath} to Nexus Repository Manager"
-          nexusArtifactUploader(
-            nexusVersion: "nexus3", // Replace with your Nexus version
-            protocol: "http",    // Replace with http or https
-            nexusUrl: "192.168.56.2:8080",          // Replace with your Nexus URL
-            groupId: pom.groupId,
-            version: VERSION,             // Replace with your version
-            repository: "maven-releases", // Replace with your repository ID
-            credentialsId: "189c55d4-781a-3a19-8f5c-350811c7f116", // Replace with your credentials ID
-            artifacts: [
-              [artifactId: pom.artifactId, classifier: '', file: artifactPath, type: pom.packaging],
-              [artifactId: pom.artifactId, classifier: '', file: "pom.xml", type: "pom"]
-            ]
-          )
-        } else {
-          error "Artifact file not found: ${artifactPath}"
-        }
-      } else {
-        error "No artifacts found for deployment"
-      }
     }
-  }
-}
-
+    stage("NEXUS") {
+      steps {
+        sh "mvn deploy"
+      }
+    }*/
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
