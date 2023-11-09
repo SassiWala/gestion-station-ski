@@ -34,7 +34,7 @@ pipeline {
           def version = pom.getVersion()
           def packaging = pom.getPackaging()
 
-          sh "mvn deploy:deploy-file -DgroupId=$groupId -DartifactId=$artifactId -Dversion=$version -Dpackaging=$packaging -Dfile=target/$artifactId-$version.$packaging -Durl=http://192.168.56.2/:8081/repository/maven-releases/"
+          sh "mvn deploy:deploy-file -DgroupId=$groupId -DartifactId=$artifactId -Dversion=$version -Dpackaging=$packaging -Dfile=target/$artifactId-$version.$packaging -Durl=http://192.168.56.2:8081/repository/maven-releases/"
         }
       }
     }/*
