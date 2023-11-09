@@ -19,12 +19,11 @@ pipeline {
     echo "Pipeline Status: ${currentBuild.currentResult}"
     mail to: "wael.hcine@esprit.tn",
          subject: "Pipeline Status: ${currentBuild.currentResult}",
-         body: "Pipeline Status: ${currentBuild.currentResult}",
+         body: "Pipeline Status: ${currentBuild.currentResult}"
          
   }
-}
-
-}/*
+}}
+/*
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
