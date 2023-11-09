@@ -38,7 +38,7 @@ pipeline {
                     def version = pom.getVersion()
                     def artifactFile = "${artifactId}-${version}.jar"
                     def repositoryId = 'maven-releases' // Replace with your Nexus repository ID
-                    def nexusUrl = 'https://192.168.56.2:8081/repository/' + repositoryId
+                    def nexusUrl = 'http://192.168.56.2:8081/repository/' + repositoryId
 
                     sh "mvn deploy:deploy-file -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -Dfile=target/${artifactFile} -DrepositoryId=${repositoryId} -Durl=${nexusUrl}"
                 }
