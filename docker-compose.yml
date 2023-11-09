@@ -13,7 +13,7 @@ services:
   gestion-station-ski:
     depends_on:
       - mysqldb
-    image: rayzox/waelhcine-$FINAL_NAME:latest
+    image: rayzox/waelhcine-5erpbi6-g4-gestion-station-ski:latest
     restart: on-failure
     environment:
       MYSQL_ROOT_PASSWORD: ""  # Set to an empty string
