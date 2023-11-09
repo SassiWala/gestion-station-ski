@@ -16,11 +16,10 @@ pipeline {
   }
     post {
   always {
-    def pipelineResult = currentBuild.currentResult
-    echo "Pipeline Status: ${pipelineResult}"
+    echo "Pipeline Status: ${currentBuild.currentResult}"
     emailext(
-      subject: "Pipeline Status: ${pipelineResult}",
-      body: "Pipeline Status: ${pipelineResult}",
+      subject: "Pipeline Status: ${currentBuild.currentResult}",
+      body: "Pipeline Status: ${currentBuild.currentResult}",
       to: "wael.hcine@esprit.tn",
       attachLog: true
     )
