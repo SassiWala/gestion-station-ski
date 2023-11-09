@@ -25,6 +25,7 @@ pipeline {
       attachLog: true
     )
   }
+}
 }/*
     stage("SONARQUBE") {
       steps {
