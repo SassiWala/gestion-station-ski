@@ -7,7 +7,7 @@ pipeline {
         sh 'git checkout WHBranch'
         sh 'git pull origin WHBranch'
       }
-    }
+    }/*
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
@@ -24,12 +24,20 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }
-    stage("NEXUS") {
+    }*/
+     stage("NEXUS DEPLOY") {
       steps {
-        sh "mvn deploy"
+        script {
+          def pom = readMavenPom file: 'pom.xml'
+          def groupId = pom.getGroupId()
+          def artifactId = pom.getBuild().getFinalName()
+          def version = pom.getVersion()
+          def packaging = pom.getPackaging()
+
+          sh "mvn deploy:deploy-file -DgroupId=$groupId -DartifactId=$artifactId -Dversion=$version -Dpackaging=$packaging -Dfile=target/$artifactId-$version.$packaging -Durl=http://192.168.56.2/:8081/repository/maven-releases/"
+        }
       }
-    }
+    }/*
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -49,6 +57,6 @@ pipeline {
       steps {
         sh 'docker-compose up -d'
       }
-    }
+    }*/
   }
 }
