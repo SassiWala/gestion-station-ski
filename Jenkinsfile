@@ -51,4 +51,15 @@ pipeline {
       }
     }
   }
-}
+  post {
+      always {
+        emailext(
+          subject: "Pipeline Status: ${currentBuild.result}",
+          body: "Pipeline ${currentBuild.result}: ${env.BUILD_URL}",
+          to: "wael.hcine@esprit.tn",
+          attachLog: true
+        )
+      }
+    }
+  }
+
