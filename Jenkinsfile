@@ -36,15 +36,12 @@ pipeline {
       }
     }
     stage('Deploy Docker Image') {
-      steps {
-        withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
-          sh '''
-            docker login -u rayzox -p $DOCKER_PASSWORD
-            docker push rayzox/waelhcine-5erpbi6-g4-gestion-station-ski
-          '''
-        }
-      }
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+      sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+      sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
     }
+  }
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
