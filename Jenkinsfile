@@ -30,29 +30,21 @@ pipeline {
         sh "mvn deploy"
       }
     }
-    stage("BUILD DOCKER IMAGE") {
-      steps {
-        script {
-          def pomXml = readFile('pom.xml')
-          def xml = new XmlSlurper().parseText(pomXml)
-
-          def appName = xml.artifactId.text()
-          def appVersion = xml.version.text()
-
-          withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-            sh "docker build -t $DOCKER_USERNAME/$appName:$appVersion ."
-          }
-        }
-      }
+      stage("BUILD DOCKER IMAGE") {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+      sh "docker build -t $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski:latest ."
     }
+  }
+}
+
     stage('Deploy Docker Image') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-          sh "docker push $DOCKER_USERNAME/$appName:$appVersion"
-        }
-      }
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+      sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+      sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
     }
+  }
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
