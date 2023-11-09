@@ -64,6 +64,7 @@ pipeline {
         sh 'docker-compose up -d'
       }
     }
+  }
      post {
   always {
     echo "Pipeline Status: ${currentBuild.currentResult}"
@@ -73,4 +74,4 @@ pipeline {
          
   }
 }}
-}
+
