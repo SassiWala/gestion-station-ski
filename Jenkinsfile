@@ -11,9 +11,9 @@ pipeline {
      stage("Read POM") {
         steps {
             script {
-                def pom = readFile('pom.xml')
-                def artifactId = pom.read().asNode().children().find { it.name() == 'artifactId' }?.text()
-                def version = pom.read().asNode().children().find { it.name() == 'version' }?.text()
+                def pom = readMavenPom file: 'pom.xml'
+                def artifactId = pom.artifactId
+                def version = pom.version
 
                 // Print the extracted values (for verification)
                 echo "Artifact ID: ${artifactId}"
