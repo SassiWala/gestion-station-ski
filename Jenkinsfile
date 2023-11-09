@@ -15,12 +15,14 @@ pipeline {
     }
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.login=admin -Dsonar.password=sonar"
+        withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
+          sh "mvn sonar:sonar -Dsonar.login=$SONAR_TOKEN"
+        }
       }
     }
     stage("MOCKITO") {
       steps {
-        sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
+        sh "mvn test"
       }
     }
     stage("NEXUS") {
@@ -30,16 +32,16 @@ pipeline {
     }
     stage("BUILD DOCKER IMAGE") {
       steps {
-        sh 'docker build -t rayzox/waelhcine-5erpbi1-g4-gestion-station-ski:latest .'
+        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh "docker build -t $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski:latest ."
+        }
       }
     }
     stage('Deploy Docker Image') {
       steps {
-        withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
-          sh '''
-            docker login -u rayzox -p $DOCKER_PASSWORD
-            docker push rayzox/waelhcine-5erpbi1-g4-gestion-station-ski
-          '''
+        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+          sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
         }
       }
     }
