@@ -14,17 +14,16 @@ pipeline {
       }
     }
   }
-    post {
+   post {
   always {
     echo "Pipeline Status: ${currentBuild.currentResult}"
-    emailext(
-      subject: "Pipeline Status: ${currentBuild.currentResult}",
-      body: "Pipeline Status: ${currentBuild.currentResult}",
-      to: "wael.hcine@esprit.tn",
-      attachLog: true
-    )
+    mail to: "wael.hcine@esprit.tn",
+         subject: "Pipeline Status: ${currentBuild.currentResult}",
+         body: "Pipeline Status: ${currentBuild.currentResult}",
+         attachLog: true
   }
 }
+
 }/*
     stage("SONARQUBE") {
       steps {
