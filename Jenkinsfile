@@ -31,10 +31,13 @@ pipeline {
       }
     }
     stage("BUILD DOCKER IMAGE") {
-      steps {
-        sh 'docker build -t rayzox/waelhcine-5erpbi6-g4-gestion-station-ski:latest .'
-      }
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+      sh "docker build -t $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski:latest ."
     }
+  }
+}
+
     stage('Deploy Docker Image') {
   steps {
     withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
