@@ -8,15 +8,11 @@ pipeline {
         sh 'git pull origin WHBranch'
       }
     }
-    /*
     stage("MAVEN BUILD") {
       steps {
         sh 'mvn clean install'
       }
     }
-  }
-  
-
     stage("SONARQUBE") {
       steps {
         withCredentials([string(credentialsId: 'Sonar_Cred', variable: 'SONAR_TOKEN')]) {
@@ -28,22 +24,12 @@ pipeline {
       steps {
         sh "mvn test"
       }
-    }*/
-    stage("NEXUS DEPLOY") {
-            steps {
-                script {
-                    def pom = readMavenPom file: 'pom.xml'
-                    def groupId = pom.getGroupId()
-                    def artifactId = pom.getArtifactId()
-                    def version = pom.getVersion()
-                    def artifactFile = "${artifactId}-${version}.jar"
-                    def repositoryId = 'maven-releases' // Replace with your Nexus repository ID
-                    def nexusUrl = 'http://192.168.56.2:8081/repository/' + repositoryId
-
-                    sh "mvn deploy:deploy-file -DgroupId=${groupId} -DartifactId=${artifactId} -Dversion=${version} -Dpackaging=jar -Dfile=target/${artifactFile} -DrepositoryId=${repositoryId} -Durl=${nexusUrl}"
-                }
-            }
-        }
+    }
+    stage("NEXUS") {
+      steps {
+        sh "mvn deploy"
+      }
+    }
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -65,13 +51,4 @@ pipeline {
       }
     }
   }
-     post {
-  always {
-    echo "Pipeline Status: ${currentBuild.currentResult}"
-    mail to: "wael.hcine@esprit.tn",
-         subject: "Pipeline Status: ${currentBuild.currentResult}",
-         body: "Pipeline Status: ${currentBuild.currentResult}"
-         
-  }
-}}
-
+}
