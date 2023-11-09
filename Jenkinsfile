@@ -12,15 +12,8 @@ pipeline {
         steps {
             script {
                 def pom = readFile('pom.xml')
-                def matcher
-
-                // Extract artifactId and version from the POM
-                if (pom =~ /<artifactId>(.*?)<\/artifactId>/) {
-                    artifactId =  =~ /<artifactId>(.*?)<\/artifactId>/.getAt(1)
-                }
-                if (pom =~ /<version>(.*?)<\/version>/) {
-                    version =  =~ /<version>(.*?)<\/version>/.getAt(1)
-                }
+                def artifactId = pom.read().asNode().children().find { it.name() == 'artifactId' }?.text()
+                def version = pom.read().asNode().children().find { it.name() == 'version' }?.text()
 
                 // Print the extracted values (for verification)
                 echo "Artifact ID: ${artifactId}"
