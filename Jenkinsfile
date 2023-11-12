@@ -46,6 +46,11 @@ pipeline {
   steps {
     script {
       def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
+
+      // Login to Docker registry
+      sh "echo 'nexus' | docker login -u admin --password-stdin http://192.168.56.2:8081/"
+
+      // Push Docker image
       docker.withRegistry('http://' + registry, registryCredentials) {
         docker.image(dockerImageName).push('latest')
       }
