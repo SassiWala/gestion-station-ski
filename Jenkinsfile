@@ -46,10 +46,9 @@ pipeline {
      steps{  
          script {
           def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
-        withCredentials([usernamePassword(credentialsId: 'NexusCredentials', passwordVariable: 'PSW', usernameVariable: 'USER')]){
-        sh "echo ${PSW} | docker login -u ${USER} --password-stdin 192.168.56.2:8082"
-        sh "docker push rayzox/waelhcine-5erpbi6-g4-gestion-station-ski:${BUILD_NUMBER}"
-    }
+             docker.withRegistry( 'http://'+registry, registryCredentials ) {
+             dockerImage.push('latest')
+          }
         }
       }
     }
