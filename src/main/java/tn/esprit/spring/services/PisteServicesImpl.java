@@ -11,6 +11,7 @@ import java.util.List;
 public class PisteServicesImpl implements  IPisteServices{
 
     private IPisteRepository pisteRepository;
+    private IPisteRepository pisteRepository2;
 
     @Override
     public List<Piste> retrieveAllPistes() {
