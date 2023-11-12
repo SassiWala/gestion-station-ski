@@ -1,8 +1,8 @@
 pipeline {
   agent any ;
    environment {
-     Sonar_Login='admin'
-     Sonar_Pwd= 'sonar'
+      SONAR_URL = 'http://192.168.33.10:9000'
+      SONAR_LOGIN ="sqa_0195b8763773ca27eace50fa32c957f987ee7c3f" 
    }
   
   stages {
@@ -19,7 +19,7 @@ pipeline {
     }
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.host.url='http://192.168.33.10:9000' -Dsonar.login=${Sonar_Login} -Dsonar.password=${Sonar_Pwd}"
+       sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
     stage("MOCKITO") {
