@@ -43,15 +43,15 @@ pipeline {
       }
     }
     stage('Deploy Docker Image') {
-       steps{  
-         script {
-             def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
-             docker.withRegistry( 'http://'+registry, registryCredentials ) {
-             dockerImage.push('latest')
-          }
-        }
+  steps {
+    script {
+      def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
+      docker.withRegistry('http://' + registry, registryCredentials) {
+        docker.image(dockerImageName).push('latest')
       }
     }
+  }
+}
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
