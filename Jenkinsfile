@@ -37,14 +37,14 @@ pipeline {
         }
       }
     }
-    stage('Deploy Docker Image') {
-      steps {
-        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-          sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
-        }
-      }
+  stage('Deploy Docker Image') {
+  steps {
+    withCredentials([usernamePassword(credentialsId: 'NexusCredentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
+      sh "docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD http://192.168.56.2:8081/repository/devops/"
+      sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
     }
+  }
+}
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
