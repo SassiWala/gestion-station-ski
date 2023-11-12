@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent any ;
+   environment {
+     Sonar_Login='admin'
+     Sonar_Pwd= 'sonar'
+   }
   
   stages {
     stage("GIT") {
@@ -8,15 +12,19 @@ pipeline {
         sh 'git pull origin amineBranch'
       }
     }
-
+    stage("Maven Clean and Compile"){
+      steps{
+        sh 'mvn clean compile'
+      }
+    }
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.host.url='http://192.168.33.10:9000' -Dsonar.login=admin -Dsonar.password=sonar"
+       sh "mvn sonar:sonar -Dsonar.host.url='http://192.168.33.10:9000' -Dsonar.login=${Sonar_Login} -Dsonar.password=${Sonar_Pwd}"
       }
     }
     stage("MOCKITO") {
       steps {
-        sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
+        sh "mvn test"
       }
     }
     stage("NEXUS") {
