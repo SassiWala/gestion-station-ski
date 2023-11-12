@@ -48,7 +48,7 @@ pipeline {
       def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
 
       // Login to Docker registry
-      sh "echo 'nexus' | docker login -u admin --password-stdin http://192.168.56.2:8081/"
+      sh "echo 'nexus' | docker login -u admin --password-stdin http://192.168.56.2:8081/repository/docker-repo-private"
 
       // Push Docker image
       docker.withRegistry('http://' + registry, registryCredentials) {
