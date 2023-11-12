@@ -45,7 +45,7 @@ pipeline {
     stage('Deploy Docker Image') {
        steps{  
          script {
-             def dockerImageName = "${DOCKER_USERNAME}/waelhcine-5erpbi6-g4-gestion-station-ski:latest"
+             def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski:latest"
              docker.withRegistry( 'http://'+registry, registryCredentials ) {
              dockerImage.push('latest')
           }
