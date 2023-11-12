@@ -3,7 +3,7 @@ pipeline {
    environment {
         
         registryCredentials = "NexusCredentials"
-        registry = "192.168.56.2:8085/"
+        registry = "192.168.56.2:8081/"
        
     }
   stages {
@@ -42,21 +42,16 @@ pipeline {
         }
       }
     }
-    stage('Deploy Docker Image') {
-  steps {
-    script {
-      def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
-
-      // Login to Docker registry
-      sh "echo 'nexus' | docker login -u admin --password-stdin http://192.168.56.2:8081/repository/docker-repo-private"
-
-      // Push Docker image
-      docker.withRegistry('http://' + registry, registryCredentials) {
-        docker.image(dockerImageName).push('latest')
+  stage('Uploading to Nexus') {
+     steps{  
+         script {
+          def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
+             docker.withRegistry( 'http://'+registry, registryCredentials ) {
+             dockerImage.push('latest')
+          }
+        }
       }
     }
-  }
-}
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
