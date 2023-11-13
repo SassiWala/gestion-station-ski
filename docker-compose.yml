@@ -23,13 +23,13 @@ services:
     tty: true
 
   angular-app:
-      image: rayzox/front-waelhcine-5erpbi6-g4:latest  
-  restart: on-failure
-  ports:
+    image: rayzox/front-waelhcine-5erpbi6-g4:latest  
+    restart: on-failure
+    ports:
       - 4200:4200
-  stdin_open: true  
-  tty: true
-  
+    stdin_open: true  
+    tty: true
+
   prometheus:
     image: prom/prometheus:v2.44.0
     container_name: prometheus
