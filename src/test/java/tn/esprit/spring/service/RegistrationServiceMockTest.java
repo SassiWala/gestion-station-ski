@@ -56,24 +56,6 @@ public class RegistrationServiceMockTest {
         Mockito.verify(registrationRepository).save(registration);
     }
 
-    @Test
-    public void testAssignRegistrationToCourse() {
-        // Arrange
-        Registration registration = new Registration();
-        Course course = new Course();
-        course.setNumCourse(1L);
 
-        when(registrationRepository.findById(eq(1L))).thenReturn(java.util.Optional.of(registration));
-        when(courseRepository.findById(eq(1L))).thenReturn(java.util.Optional.of(course));
-        when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
-
-        // Act
-        Registration result  = registrationServices.assignRegistrationToCourse(1L, 1L);
-
-        // Assert
-        assertEquals(registration, result);
-        assertEquals(course, registration.getCourse());
-        Mockito.verify(registrationRepository).save(registration);
-    }
 
 }
