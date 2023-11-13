@@ -17,16 +17,18 @@ pipeline {
         sh 'mvn clean compile'
       }
     }
+
     stage("SONARQUBE") {
       steps {
        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
-    /* stage("JUnit and Mockito"){
+
+    stage("JUnit and Mockito"){
               steps{
                 sh "mvn test"
               }
-            } */
+
 
     stage("Nexus"){
          steps{
@@ -34,11 +36,12 @@ pipeline {
          }
        }
 
+    /*
     stage("BUILD JAR FILE") {
       steps {
         sh 'mvn package -Dmaven.test.skip'  // Add this step to build the JAR file
       }
-    }
+    } */
     stage("BUILD DOCKER IMAGE") {
       steps {
         sh 'docker build -t siboz69/gestion-station-ski:latest .'

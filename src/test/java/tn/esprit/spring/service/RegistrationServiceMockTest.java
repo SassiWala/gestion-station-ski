@@ -4,25 +4,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tn.esprit.spring.entities.*;
+import tn.esprit.spring.entities.Course;
+import tn.esprit.spring.entities.Registration;
+import tn.esprit.spring.entities.Skier;
+import tn.esprit.spring.entities.Support;
 import tn.esprit.spring.repositories.ICourseRepository;
 import tn.esprit.spring.repositories.IRegistrationRepository;
 import tn.esprit.spring.repositories.ISkierRepository;
 import tn.esprit.spring.services.RegistrationServicesImpl;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RegistrationServiceMockTest {
+class RegistrationServiceMockTest {
 
     @Mock
     private IRegistrationRepository registrationRepository;
@@ -37,25 +38,85 @@ public class RegistrationServiceMockTest {
     private RegistrationServicesImpl registrationServices;
 
     @Test
-    public void testAddRegistrationAndAssignToSkier() {
-        // Arrange
+    void testAddRegistrationAndAssignToSkier() {
+        // Mock data
+        Registration registration = new Registration();
+        Long numSkier = 1L;
         Skier skier = new Skier();
-        skier.setNumSkier(1L);
 
+
+        // Mock the behavior of the skierRepository
+        when(skierRepository.findById(numSkier)).thenReturn(Optional.of(skier));
+
+        // Mock the behavior of the registrationRepository
+        when(registrationRepository.save(any())).thenReturn(registration);
+
+        // Test the service method
+        Registration result = registrationServices.addRegistrationAndAssignToSkier(registration, numSkier);
+
+        // Verify that skierRepository.findById was called once with the correct argument
+        verify(skierRepository, times(1)).findById(numSkier);
+
+        // Verify that registrationRepository.save was called once with the correct argument
+        verify(registrationRepository, times(1)).save(any());
+
+        // Assert the result
+        assertEquals(registration, result);
+    }
+
+    @Test
+    void testAssignRegistrationToCourse() {
+        // Mock data
+        Long numRegistration = 1L;
+        Long numCourse = 2L;
         Registration registration = new Registration();
 
-        when(skierRepository.findById(eq(1L))).thenReturn(Optional.of(skier));
-        when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
+        Course course = new Course();
 
-        // Act
-        Registration result = registrationServices.addRegistrationAndAssignToSkier(registration, 1L);
 
-        // Assert
+        // Mock the behavior of the registrationRepository
+        when(registrationRepository.findById(numRegistration)).thenReturn(Optional.of(registration));
+
+        // Mock the behavior of the courseRepository
+        when(courseRepository.findById(numCourse)).thenReturn(Optional.of(course));
+
+        // Mock the behavior of the registrationRepository.save
+        when(registrationRepository.save(any())).thenReturn(registration);
+
+        // Test the service method
+        Registration result = registrationServices.assignRegistrationToCourse(numRegistration, numCourse);
+
+        // Verify that registrationRepository.findById was called once with the correct argument
+        verify(registrationRepository, times(1)).findById(numRegistration);
+
+        // Verify that courseRepository.findById was called once with the correct argument
+        verify(courseRepository, times(1)).findById(numCourse);
+
+        // Verify that registrationRepository.save was called once with the correct argument
+        verify(registrationRepository, times(1)).save(any());
+
+        // Assert the result
         assertEquals(registration, result);
-        assertEquals(skier, registration.getSkier());
-        Mockito.verify(registrationRepository).save(registration);
     }
 
 
 
+    @Test
+    void testNumWeeksCourseOfInstructorBySupport() {
+        // Mock data
+        Long numInstructor = 1L;
+        Support support = Support.SKI;
+
+        // Mock the behavior of the registrationRepository
+        when(registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support)).thenReturn(Arrays.asList(1, 2, 3));
+
+        // Test the service method
+        List<Integer> result = registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor, support);
+
+        // Verify that registrationRepository.numWeeksCourseOfInstructorBySupport was called once with the correct arguments
+        verify(registrationRepository, times(1)).numWeeksCourseOfInstructorBySupport(numInstructor, support);
+
+        // Assert the result
+        assertEquals(Arrays.asList(1, 2, 3), result);
+    }
 }
