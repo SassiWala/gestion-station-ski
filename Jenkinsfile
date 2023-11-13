@@ -22,12 +22,17 @@ pipeline {
        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
-
+    /* stage("JUnit and Mockito"){
+              steps{
+                sh "mvn test"
+              }
+            }
     stage("Nexus"){
             steps{
               sh "mvn deploy -Durl=http://192.168.33.10:8081/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip -X"
             }
           }
+          */
     stage("BUILD DOCKER IMAGE") {
       steps {
         sh 'docker build -t amineBranch/gestion-station-ski:latest .'
