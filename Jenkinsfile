@@ -43,7 +43,7 @@ pipeline {
 
                 // Move to the Angular project directory
                 dir("front-gestion-ski") {
-                    sh "docker build -t $DOCKER_USERNAME/front-waelhcine-5erpbi6-g4:latest"
+                    sh "docker build -t rayzox/front-waelhcine-5erpbi6-g4:latest"
                 }
             }
      }
