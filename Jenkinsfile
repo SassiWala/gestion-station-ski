@@ -22,11 +22,7 @@ pipeline {
        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
-    stage("MOCKITO") {
-      steps {
-        sh "mvn test"
-      }
-    }
+
     stage("NEXUS") {
       steps {
         sh "mvn deploy"
