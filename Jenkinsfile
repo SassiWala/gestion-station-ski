@@ -52,6 +52,7 @@ pipeline {
                         sh "docker logout $NEXUS_URL"
             }
         }
+  }
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
