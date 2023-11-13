@@ -61,7 +61,7 @@ pipeline{
               attachLog: true
           }
       }
-  }
+
 
 
 }
