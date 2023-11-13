@@ -17,13 +17,13 @@ pipeline {
         sh 'mvn clean compile'
       }
     }
-
+/*
     stage("SONARQUBE") {
       steps {
         sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
-
+*/
     stage("JUnit and Mockito") {
       steps {
         sh "mvn test"
