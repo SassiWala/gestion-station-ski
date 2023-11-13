@@ -12,6 +12,20 @@ pipeline {
       steps {
         sh 'git checkout WHBranch'
         sh 'git pull origin WHBranch'
+         if (fileExists('front-gestion-ski')) {
+                        echo "Checking for changes in Angular project..."
+                        sh 'git -C front-gestion-ski fetch'
+                        def hasChanges = sh(script: 'git -C front-gestion-ski rev-list HEAD...origin/main --count', returnStatus: true) != 0
+                        if (hasChanges) {
+                            echo "Pulling changes in Angular project..."
+                            sh 'git -C front-gestion-ski pull origin main'
+                        } else {
+                            echo "No changes in Angular project. Skipping clone and build."
+                        }
+                    } else {
+                        // Clone the Angular project repository
+                        sh 'git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski'
+                    }
       }
     }
     stage("MAVEN BUILD") {
@@ -39,14 +53,6 @@ pipeline {
      stage("Build Angular Project") {
             steps {
               script {
-                    if (fileExists('front-gestion-ski')) {
-                        // Remove the existing directory if it exists
-                        sh "rm -rf front-gestion-ski"
-                    }
-                }
-                // Clone the Angular project repository
-                sh "git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski"
-
                 // Move to the Angular project directory
                 dir("front-gestion-ski") {
                     sh "docker build -t rayzox/front-waelhcine-5erpbi6-g4:latest ."
