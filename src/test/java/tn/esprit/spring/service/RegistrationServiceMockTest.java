@@ -105,7 +105,7 @@ class RegistrationServiceMockTest {
     void testNumWeeksCourseOfInstructorBySupport() {
         // Mock data
         Long numInstructor = 1L;
-        Support support = Support.SKI;
+        Support support = Support.SKI; // Mock the enum correctly
 
         // Mock the behavior of the registrationRepository
         when(registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support)).thenReturn(Arrays.asList(1, 2, 3));
