@@ -13,22 +13,6 @@ pipeline {
                     // Checkout and pull from the Git repository
                     sh 'git checkout WHBranch'
                     sh 'git pull origin WHBranch'
-
-                    // Check for changes in the Angular project repository
-                    if (fileExists('front-gestion-ski')) {
-                        echo "Checking for changes in Angular project..."
-                        sh 'git -C front-gestion-ski fetch'
-                        def hasChanges = sh(script: 'git -C front-gestion-ski rev-list HEAD...origin/main --count', returnStatus: true) != 0
-                        if (hasChanges) {
-                            echo "Pulling changes in Angular project..."
-                            sh 'git -C front-gestion-ski pull origin main'
-                        } else {
-                            echo "No changes in Angular project. Skipping clone and build."
-                        }
-                    } else {
-                        // Clone the Angular project repository
-                        sh 'git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski'
-                    }
                 }
             }
         }
@@ -60,16 +44,34 @@ pipeline {
         }
 
         stage("Build Angular Project") {
-            steps {
-                script {
-                    // Move to the Angular project directory
-                    dir("front-gestion-ski") {
-                        sh "docker build -t rayzox/front-waelhcine-5erpbi6-g4:latest ."
+    steps {
+        script {
+            // Check if the Angular project directory exists
+            if (fileExists('front-gestion-ski')) {
+                // Move to the Angular project directory
+                dir("front-gestion-ski") {
+                    // Check for changes in the Git repository
+                    def hasChanges = sh(script: 'git diff-index --quiet HEAD || [ -n "$(git ls-files --modified --others --exclude-standard)" ]', returnStatus: true) == 1
+
+                    if (hasChanges) {
+                        // Pull changes if there are any
+                        sh "git pull origin master"
+                    } else {
+                        echo "No changes in the Angular project repository."
                     }
                 }
+            } else {
+                // Clone the Angular project repository if it doesn't exist
+                sh "git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski"
+            }
+
+            // Move to the Angular project directory
+            dir("front-gestion-ski") {
+                sh "docker build -t rayzox/front-waelhcine-5erpbi6-g4:latest ."
             }
         }
-
+    }
+}
         stage("BUILD DOCKER IMAGE") {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
