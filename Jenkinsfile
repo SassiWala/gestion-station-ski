@@ -2,7 +2,7 @@ pipeline {
   agent any
   environment {
     SONAR_URL = 'http://192.168.33.10:9000'
-    SONAR_LOGIN = "sqa_0195b8763773ca27eace50fa32c957f987ee7c3f"
+
   }
 
   stages {
@@ -17,13 +17,18 @@ pipeline {
         sh 'mvn clean compile'
       }
     }
-/*
+
     stage("SONARQUBE") {
-      steps {
-        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
-      }
+        steps {
+            withCredentials([string(credentialsId: 'sonar_token_pass', variable: 'SONAR_TOKEN')]) {
+                sh '''
+                    mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=$SONAR_TOKEN
+                '''
+            }
+        }
     }
-*/
+
+
     stage("JUnit and Mockito") {
       steps {
         sh "mvn test"
@@ -65,4 +70,37 @@ pipeline {
       }
     }
   }
+  post {
+      success {
+          mail to: 'amine.bouzouita@esprit.tn',
+               subject: "Build Successful: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+               body: """
+                     <html>
+                     <body>
+                         <h2>Build Successful</h2>
+                         <p><b>Project:</b> ${env.JOB_NAME}</p>
+                         <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                         <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                     </body>
+                     </html>
+                     """,
+               mimeType: 'text/html'
+      }
+      failure {
+          mail to: 'amine.bouzouita@esprit.tn',
+               subject: "Build Failed: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+               body: """
+                     <html>
+                     <body>
+                         <h2 style="color: red;">Build Failed</h2>
+                         <p><b>Project:</b> ${env.JOB_NAME}</p>
+                         <p><b>Build Number:</b> ${env.BUILD_NUMBER}</p>
+                         <p><b>Build URL:</b> <a href="${env.BUILD_URL}">${env.BUILD_URL}</a></p>
+                     </body>
+                     </html>
+                     """,
+               mimeType: 'text/html'
+      }
+  }
+
 }
