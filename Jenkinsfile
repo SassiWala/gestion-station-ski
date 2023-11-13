@@ -1,10 +1,10 @@
 pipeline {
-  agent any ;
-   environment {
-      SONAR_URL = 'http://192.168.33.10:9000'
-      SONAR_LOGIN ="sqa_0195b8763773ca27eace50fa32c957f987ee7c3f" 
-   }
-  
+  agent any
+  environment {
+    SONAR_URL = 'http://192.168.33.10:9000'
+    SONAR_LOGIN = "sqa_0195b8763773ca27eace50fa32c957f987ee7c3f"
+  }
+
   stages {
     stage("GIT") {
       steps {
@@ -12,36 +12,38 @@ pipeline {
         sh 'git pull origin amineBranch'
       }
     }
-    stage("Maven Clean and Compile"){
-      steps{
+    stage("Maven Clean and Compile") {
+      steps {
         sh 'mvn clean compile'
       }
     }
 
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
+        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
 
-    stage("JUnit and Mockito"){
-              steps{
-                sh "mvn test"
-              }
+    stage("JUnit and Mockito") {
+      steps {
+        sh "mvn test"
+      }
+    }
 
-
-    stage("Nexus"){
-         steps{
-           sh "mvn deploy -Durl=https://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
-         }
-       }
+    stage("Nexus") {
+      steps {
+        sh "mvn deploy -Durl=https://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
+      }
+    }
 
     /*
     stage("BUILD JAR FILE") {
       steps {
         sh 'mvn package -Dmaven.test.skip'  // Add this step to build the JAR file
       }
-    } */
+    }
+    */
+
     stage("BUILD DOCKER IMAGE") {
       steps {
         sh 'docker build -t siboz69/gestion-station-ski:latest .'
