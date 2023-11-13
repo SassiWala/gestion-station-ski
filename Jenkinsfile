@@ -42,7 +42,7 @@ pipeline {
         withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
           sh '''
             docker login -u siboz69 -p $DOCKER_PASSWORD
-            docker push siboz69/gestion-station-ski
+            docker push amineBranch/gestion-station-ski
           '''
         }
       }
