@@ -52,21 +52,12 @@ pipeline{
     }
     
   }
-  post {
-         changed {
-            script {
-                if (currentBuild.currentResult == 'FAILURE') { 
-                    emailext subject: '$DEFAULT_SUBJECT',
-                        body: '$DEFAULT_CONTENT',
-                        recipientProviders: [
-                            [$class: 'CulpritsRecipientProvider'],
-                            [$class: 'DevelopersRecipientProvider'],
-                            [$class: 'RequesterRecipientProvider'] 
-                        ], 
-                        replyTo: '$DEFAULT_REPLYTO',
-                        to: '$DEFAULT_RECIPIENTS'
-                }
-            }
-        }
+post {
+always {
+  script {
+    if (currentBuild.currentResult == 'FAILURE') {
+      step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "sassiwale1999@gmail.com", sendToIndividuals: true])
     }
+  }
+}
 }
