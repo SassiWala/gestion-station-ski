@@ -52,10 +52,10 @@ pipeline {
                 dir("front-gestion-ski") {
                     // Check for changes in the Git repository
                     def hasChanges = sh(script: 'git diff-index --quiet HEAD || [ -n "$(git ls-files --modified --others --exclude-standard)" ]', returnStatus: true) == 1
-
+                    echo hasChanges
                     if (hasChanges) {
                         // Pull changes if there are any
-                        sh "git pull origin master"
+                        sh "git pull origin main"
                     } else {
                         echo "No changes in the Angular project repository."
                     }
