@@ -68,7 +68,7 @@ public class RegistrationServiceMockTest {
         when(registrationRepository.save(any(Registration.class))).thenReturn(registration);
 
         // Act
-        Registration result = registrationServices.assignRegistrationToCourse(1L, 1L);
+        Registration result  = registrationServices.assignRegistrationToCourse(1L, 1L);
 
         // Assert
         assertEquals(registration, result);
