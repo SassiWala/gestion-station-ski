@@ -33,6 +33,11 @@ pipeline {
             }
           }
           */
+    stage("BUILD JAR FILE") {
+      steps {
+        sh 'mvn package'  // Add this step to build the JAR file
+      }
+    }
     stage("BUILD DOCKER IMAGE") {
       steps {
         sh 'docker build -t aminebranch/gestion-station-ski:latest .'
