@@ -45,16 +45,11 @@ pipeline {
     }
   stage('Deploy Docker Image to Nexus') {
             steps {
-                // Log in to Nexus Docker registry
-                withCredentials([usernamePassword(credentialsId: 'NexusCredentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                    sh "docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD $registry"
-                }
-
-                // Tag the Docker image with Nexus repository information
-                sh "docker tag $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski:latest $registry/waelhcine-5erpbi6-g4-gestion-station-ski:latest"
-
-                // Push the Docker image to Nexus repository
-                sh "docker push $registry/waelhcine-5erpbi6-g4-gestion-station-ski:latest"
+                withCredentials([string(credentialsId: NEXUS_CREDENTIALS_ID, variable: 'NEXUS_CREDENTIALS')]) {
+                        sh "docker login -u ${NEXUS_CREDENTIALS_USR} -p ${NEXUS_CREDENTIALS_PSW} $NEXUS_URL"
+                        sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $NEXUS_URL/$NEXUS_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+                        sh "docker push $NEXUS_URL/$NEXUS_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
+                        sh "docker logout $NEXUS_URL"
             }
         }
     stage('Docker Compose') {
