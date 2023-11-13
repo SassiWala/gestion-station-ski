@@ -53,4 +53,15 @@ pipeline{
           }
         }
     }
+   post{
+          always{
+              emailext to: "eya.said@esprit.tn",
+              subject: "Test Email",
+              body: "Test",
+              attachLog: true
+          }
+      }
+  }
+
+
 }
