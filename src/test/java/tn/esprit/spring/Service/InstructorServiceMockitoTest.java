@@ -66,4 +66,18 @@ public class InstructorServiceMockitoTest {
         Assertions.assertEquals(instructor, result);
     }
 
+
+    @Test
+    public void testUpdateInstructor() {
+        // Arrange
+        Instructor updatedInstructor = new Instructor();
+
+        // Act
+        Instructor result = instructorServices.updateInstructor(updatedInstructor);
+
+        // Assert
+        Mockito.verify(instructorRepository, Mockito.times(1)).save(updatedInstructor);
+        Assertions.assertEquals(updatedInstructor, result);
+    }
+
 }
