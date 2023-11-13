@@ -36,6 +36,16 @@ pipeline {
         sh "mvn deploy"
       }
     }
+     stage("Build Angular Project") {
+            steps {
+                // Clone the Angular project repository
+                sh "git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski"
+
+                // Move to the Angular project directory
+                dir("front-gestion-ski") {
+                    sh "docker build -t $DOCKER_USERNAME/front-waelhcine-5erpbi6-g4:latest"
+                }
+            }
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
@@ -43,16 +53,14 @@ pipeline {
         }
       }
     }
-  stage('Deploy Docker Image to Nexus') {
-            steps {
-                withCredentials([string(credentialsId: NEXUS_CREDENTIALS_ID, variable: 'NEXUS_CREDENTIALS')]) {
-                        sh "docker login -u ${NEXUS_CREDENTIALS_USR} -p ${NEXUS_CREDENTIALS_PSW} $NEXUS_URL"
-                        sh "docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $NEXUS_URL/$NEXUS_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
-                        sh "docker push $NEXUS_URL/$NEXUS_REPOSITORY/$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
-                        sh "docker logout $NEXUS_URL"
-            }
+  stage('Deploy Docker Image') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+          sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
         }
-  }
+      }
+    }
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
