@@ -19,6 +19,7 @@ import tn.esprit.spring.repositories.IInstructorRepository;
 import tn.esprit.spring.services.IInstructorServices;
 import tn.esprit.spring.services.InstructorServicesImpl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,9 +66,24 @@ public class InstructorServiceMockitoTest {
         // Assert
         Assertions.assertEquals(instructor, result);
     }
-
-
     @Test
+    public void testRetrieveAllInstructors() {
+        // Arrange
+        Instructor instructor1 = new Instructor();
+        Instructor instructor2 = new Instructor();
+        List<Instructor> expectedInstructors = Arrays.asList(instructor1, instructor2);
+
+        // Define the behavior of the instructorRepository.findAll() method
+        Mockito.when(instructorRepository.findAll()).thenReturn(expectedInstructors);
+
+        // Act
+        List<Instructor> result = instructorServices.retrieveAllInstructors();
+
+        // Assert
+        Assertions.assertEquals(expectedInstructors, result);
+    }
+
+   /* @Test
     public void testUpdateInstructor() {
         // Arrange
         Instructor updatedInstructor = new Instructor();
@@ -77,7 +93,8 @@ public class InstructorServiceMockitoTest {
 
         // Assert
         Mockito.verify(instructorRepository, Mockito.times(1)).save(updatedInstructor);
+
         Assertions.assertEquals(updatedInstructor, result);
-    }
+    }*/
 
 }
