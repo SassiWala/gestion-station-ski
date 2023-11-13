@@ -26,13 +26,14 @@ pipeline {
               steps{
                 sh "mvn test"
               }
-            }
+            } */
+
     stage("Nexus"){
-            steps{
-              sh "mvn deploy -Durl=http://192.168.33.10:8081/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip -X"
-            }
-          }
-          */
+         steps{
+           sh "mvn deploy -Durl=https://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
+         }
+       }
+
     stage("BUILD JAR FILE") {
       steps {
         sh 'mvn package -Dmaven.test.skip'  // Add this step to build the JAR file
