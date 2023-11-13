@@ -40,7 +40,7 @@ pipeline {
     }
     stage("BUILD DOCKER IMAGE") {
       steps {
-        sh 'docker build -t aminebranch/gestion-station-ski:latest .'
+        sh 'docker build -t siboz69/gestion-station-ski:latest .'
       }
     }
     stage('Deploy Docker Image') {
