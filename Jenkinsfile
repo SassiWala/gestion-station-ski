@@ -36,25 +36,6 @@ pipeline {
         sh "mvn deploy"
       }
     }
-     stage("Build Angular Project") {
-            steps {
-                script {
-                    // Clone or pull the Angular project repository
-                    dir("front-gestion-ski") {
-                        // Check if the directory exists for an initial clone
-                        if (!fileExists('.git')) {
-                            sh "git clone https://github.com/xRayzox/Front-gestion-ski ."
-                        } else {
-                            // If the directory exists, pull the latest changes
-                            sh "git pull"
-                        }
-
-                        // Build the Docker image
-                        sh "docker build -t rayzox/front-waelhcine-5erpbi6-g4:latest ."
-                    }
-                }
-            }
-        }
     
     stage("BUILD DOCKER IMAGE") {
       steps {
