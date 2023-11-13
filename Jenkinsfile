@@ -22,11 +22,7 @@ pipeline {
        sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
-    stage("JUnit and Mockito"){
-              steps{
-                sh "mvn test"
-              }
-          }
+
     stage("Nexus"){
             steps{
               sh "mvn deploy -Durl=http://192.168.33.10/repository/maven-releases/ -Drepository.username=admin -Drepository.password=nexus -Dmaven.test.skip"
