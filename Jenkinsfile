@@ -79,7 +79,7 @@ pipeline {
         mail to: 'wael.hcine@esprit.tn',
              subject: "SUCCESS MSG: Project name -> ${env.JOB_NAME}",
              body: """
-                    <b>Example</b><br>
+                    <b>Run With SUCCESS</b><br>
                     Project: ${env.JOB_NAME} <br>
                     Build Number: ${env.BUILD_NUMBER} <br>
                     URL de build: ${env.BUILD_URL}
@@ -93,7 +93,7 @@ pipeline {
             mail to: 'wael.hcine@esprit.tn',
                  subject: "ERROR MSG: Project name -> ${env.JOB_NAME}",
                  body: """
-                        <b>Example</b><br>
+                        <b>Run With ERRORS </b><br>
                         Project: ${env.JOB_NAME} <br>
                         Build Number: ${env.BUILD_NUMBER} <br>
                         URL de build: ${env.BUILD_URL} <br>
