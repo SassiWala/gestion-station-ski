@@ -1,5 +1,9 @@
 pipeline {
-  agent any
+  agent any ;
+   environment {
+      SONAR_URL = 'http://192.168.33.10:9000'
+      SONAR_LOGIN ="sqa_0195b8763773ca27eace50fa32c957f987ee7c3f" 
+   }
   
   stages {
     stage("GIT") {
@@ -8,15 +12,19 @@ pipeline {
         sh 'git pull origin amineBranch'
       }
     }
-
+    stage("Maven Clean and Compile"){
+      steps{
+        sh 'mvn clean compile'
+      }
+    }
     stage("SONARQUBE") {
       steps {
-       sh "mvn sonar:sonar -Dsonar.host.url='http://192.168.33.10:9000' -Dsonar.login=admin -Dsonar.password=sonar"
+       sh "mvn sonar:sonar -Dsonar.host.url=${SONAR_URL} -Dsonar.login=${SONAR_LOGIN}"
       }
     }
     stage("MOCKITO") {
       steps {
-        sh "mvn test -Dtest=tn.esprit.spring.services.SkierServiceMockTest"
+        sh "mvn test"
       }
     }
     stage("NEXUS") {
@@ -34,7 +42,7 @@ pipeline {
         withCredentials([string(credentialsId: 'pass', variable: 'DOCKER_PASSWORD')]) {
           sh '''
             docker login -u siboz69 -p $DOCKER_PASSWORD
-            docker push siboz69/gestion-station-ski
+            docker push amineBranch/gestion-station-ski
           '''
         }
       }
