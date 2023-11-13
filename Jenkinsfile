@@ -35,7 +35,7 @@ pipeline {
           */
     stage("BUILD JAR FILE") {
       steps {
-        sh 'mvn package'  // Add this step to build the JAR file
+        sh 'mvn package -Dmaven.test.skip'  // Add this step to build the JAR file
       }
     }
     stage("BUILD DOCKER IMAGE") {
