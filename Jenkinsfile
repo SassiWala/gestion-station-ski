@@ -46,6 +46,7 @@ pipeline {
                     sh "docker build -t $DOCKER_USERNAME/front-waelhcine-5erpbi6-g4:latest"
                 }
             }
+     }
     stage("BUILD DOCKER IMAGE") {
       steps {
         withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
