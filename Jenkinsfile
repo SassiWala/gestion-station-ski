@@ -70,39 +70,11 @@ pipeline {
     }
   }
   post {
-    always {
-        script {
-            currentBuild.result = currentBuild.result ?: 'SUCCESS'
-        }
-    }
-    success {
-        mail to: 'wael.hcine@esprit.tn',
-             subject: "SUCCESS MSG: Project name -> ${env.JOB_NAME}",
-             body: """
-                    <b>Run With SUCCESS</b><br>
-                    Project: ${env.JOB_NAME} <br>
-                    Build Number: ${env.BUILD_NUMBER} <br>
-                    URL de build: ${env.BUILD_URL}
-                  """,
-             mimeType: 'text/html',
-             charset: 'UTF-8'
-    }
-    failure {
-        script {
-            def failedStage = currentBuild.rawBuild.result
-            mail to: 'wael.hcine@esprit.tn',
-                 subject: "ERROR MSG: Project name -> ${env.JOB_NAME}",
-                 body: """
-                        <b>Run With ERRORS </b><br>
-                        Project: ${env.JOB_NAME} <br>
-                        Build Number: ${env.BUILD_NUMBER} <br>
-                        URL de build: ${env.BUILD_URL} <br>
-                        Failed Stage: ${failedStage}
-                      """,
-                 mimeType: 'text/html',
-                 charset: 'UTF-8'
-        }
-    }
-}
-
+               success {
+                   mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "SUCCESS MSG: Project name -> ${env.JOB_NAME}", to: "wael.hcine@esprit.tn";
+               }
+               failure {
+                   mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR MSG: Project name -> ${env.JOB_NAME}", to: "wael.hcine@esprit.tn";
+               }
+           }
 }
