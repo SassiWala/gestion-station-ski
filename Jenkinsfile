@@ -38,6 +38,12 @@ pipeline {
     }
      stage("Build Angular Project") {
             steps {
+              script {
+                    if (fileExists('front-gestion-ski')) {
+                        // Remove the existing directory if it exists
+                        sh "rm -rf front-gestion-ski"
+                    }
+                }
                 // Clone the Angular project repository
                 sh "git clone https://github.com/xRayzox/Front-gestion-ski front-gestion-ski"
 
