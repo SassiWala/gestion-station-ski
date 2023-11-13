@@ -44,25 +44,14 @@ pipeline {
         }
       }
     }
-  stage('Deploy Docker Image to Nexus') {
-    steps {
-        script {
-            def dockerImageName = "rayzox/waelhcine-5erpbi6-g4-gestion-station-ski"
-            def nexusRepositoryUrl = "http://192.168.56.2:8081/repository/devops/"
-
-            // Login to Docker registry (Nexus in this case)
-            withCredentials([usernamePassword(credentialsId: 'NexusCredentials', usernameVariable: 'NEXUS_USERNAME', passwordVariable: 'NEXUS_PASSWORD')]) {
-                sh "docker login -u $NEXUS_USERNAME -p $NEXUS_PASSWORD $nexusRepositoryUrl"
-            }
-
-            // Tag the Docker image with Nexus repository URL
-            sh "docker tag $dockerImageName $nexusRepositoryUrl/$dockerImageName"
-
-            // Push the Docker image to Nexus repository
-            sh "docker push $nexusRepositoryUrl/$dockerImageName"
+  stage('Deploy Docker Image') {
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'User', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+          sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
+          sh "docker push $DOCKER_USERNAME/waelhcine-5erpbi6-g4-gestion-station-ski"
         }
+      }
     }
-}
     stage('Docker Compose') {
       steps {
         sh 'docker-compose up -d'
@@ -78,3 +67,4 @@ pipeline {
                }
            }
 }
+
