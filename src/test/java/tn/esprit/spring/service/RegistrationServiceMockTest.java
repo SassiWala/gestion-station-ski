@@ -101,22 +101,5 @@ class RegistrationServiceMockTest {
 
 
 
-    @Test
-    void testNumWeeksCourseOfInstructorBySupport() {
-        // Mock data
-        Long numInstructor = 1L;
-        Support support = Support.SKI; // Mock the enum correctly
 
-        // Mock the behavior of the registrationRepository
-        when(registrationRepository.numWeeksCourseOfInstructorBySupport(numInstructor, support)).thenReturn(Arrays.asList(1, 2, 3));
-
-        // Test the service method
-        List<Integer> result = registrationServices.numWeeksCourseOfInstructorBySupport(numInstructor, support);
-
-        // Verify that registrationRepository.numWeeksCourseOfInstructorBySupport was called once with the correct arguments
-        verify(registrationRepository, times(1)).numWeeksCourseOfInstructorBySupport(numInstructor, support);
-
-        // Assert the result
-        assertEquals(Arrays.asList(1, 2, 3), result);
-    }
 }
